@@ -10,42 +10,34 @@ function Moviecard(props) {
     dispatch(addFav(newFav));
   }
   return (
-    <>
+    <div className="movieCard">
       {/* {JSON.stringify(props.files)} */}
-      <div className="movieCard">
-        <div className="row">
-          {props.files.map((file) => {
-            return (
-              <div key={file.id} style={{ BackgroundColor: "grey" }} className="col-md-3">
-                <Card className="mt-3" style={{ height: "41rem", borderRadius: 10 }}>
-                  <Card.Img variant="top" src={`https://image.tmdb.org/t/p/original${file.poster_path}`} style={{ height: "25rem", borderRadius: 10 }} />
-                  <Card.Body>
-                    <Card.Title style={{ textAlign: "center" }}>
-                      <strong>
-                        <Link to={`/detail/${file.id}`}>{file.title}</Link>
-                      </strong>
-                    </Card.Title>
-                    <Card.Text style={{ marginBottom: "0px", textAlign: "center" }}>release date</Card.Text>
-                    <Card.Text style={{ textAlign: "center" }}>
-                      <strong>{file.release_date}</strong>
-                    </Card.Text>
-                    <Card.Text style={{ marginBottom: "0px", textAlign: "center" }}>rating</Card.Text>
-                    <Card.Text style={{ textAlign: "center" }}>
-                      <strong>{file.vote_average}</strong>
-                    </Card.Text>
-                    <div className="col text-center">
-                      <Button variant="primary" onClick={() => AddNewFav(file)}>
-                        Add to Favorite
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </>
+      {props.files.map((file) => {
+        return (
+          <Card key={file.id} className="card">
+            {file.poster_path !== null ? (
+              <Card.Img variant="top" src={`https://image.tmdb.org/t/p/original${file.poster_path}`} className="cardImage" />
+            ) : (
+              <Card.Img variant="top" src={require("../assets/default_poster.jpg")} className="cardImage" />
+            )}
+            <Card.Body>
+              <Card.Text className={file.title.length > 40 ? "cardTextLong" : "cardTextShort"}>
+                <Link to={`/detail/${file.id}`}>{file.title}</Link>
+              </Card.Text>
+              <Card.Text className="cardSub">release date</Card.Text>
+              <Card.Text className="cardTextShort">{file.release_date}</Card.Text>
+              <Card.Text className="cardSub">rating</Card.Text>
+              <Card.Text className="cardTextShort">{file.vote_average}</Card.Text>
+            </Card.Body>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+              <Button variant="primary" onClick={() => AddNewFav(file)}>
+                Add to Favorite
+              </Button>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
   );
 }
 
