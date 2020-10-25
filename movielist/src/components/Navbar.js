@@ -4,6 +4,17 @@ import { Link } from "react-router-dom";
 
 function NavigationBar(props) {
   const [search, setSearch] = useState("");
+  const [navbars, setNavbars] = useState(false);
+
+  function changeBackground() {
+    if (window.scrollY >= 50) {
+      setNavbars(true);
+    } else {
+      setNavbars(false);
+    }
+  }
+
+  window.addEventListener("scroll", changeBackground);
 
   function onSearchChange(event) {
     setSearch(event.target.value);
@@ -23,27 +34,38 @@ function NavigationBar(props) {
     }
   }
   return (
-    <Navbar fixed="top" bg="dark" variant="dark">
-      <Navbar.Brand style={{ height: "50px", fontSize: "40px", fontWeight: "bold" }}>MovieList</Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link>
-          <Link style={{ color: "white" }} to="/">
-            Home
-          </Link>
-        </Nav.Link>
-        <Nav.Link>
-          <Link style={{ color: "white" }} to="/favorite">
-            Favorite
-          </Link>
-        </Nav.Link>
-      </Nav>
-      <Form onSubmit={onSearchSubmit} inline>
-        <FormControl onChange={onSearchChange} type="text" placeholder="Search" className="mr-sm-2" />
-        <Button variant="outline-light" type="submit">
-          Search
-        </Button>
-      </Form>
-    </Navbar>
+    <>
+      {navbars ? (
+        <Navbar fixed="top" bg="light" variant="light">
+          <Navbar.Brand className="navbarBrand" href="/">MovieList</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link>
+              <Link style={{ color: "black" }} to="/">
+                Home
+              </Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link style={{ color: "black" }} to="/favorite">
+                Favorite
+              </Link>
+            </Nav.Link>
+          </Nav>
+          <Form onSubmit={onSearchSubmit} inline>
+            <FormControl onChange={onSearchChange} type="text" placeholder="Search" className="mr-sm-2" />
+            <Button variant="outline-dark" type="submit">
+              Search
+            </Button>
+          </Form>
+        </Navbar>
+      ) : (
+        <Navbar fixed="top" bg="transparent" variant="dark">
+          <Navbar.Brand className="navbarBrand" href="/" style={{ fontSize: 45 }}>
+            MovieList 
+            <p style={{ fontSize: 15, marginTop: -10 }}>Millions of movies to discover...</p>
+          </Navbar.Brand>
+        </Navbar>
+      )}
+    </>
   );
 }
 
